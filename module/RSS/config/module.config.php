@@ -18,7 +18,7 @@ return [
                         'id'     => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\RSSController::class,
+                        'controller' => Controller\ChannelController::class,
                         'action'     => 'index',
                     ],
                 ],

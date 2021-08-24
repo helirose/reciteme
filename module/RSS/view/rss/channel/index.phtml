@@ -1,0 +1,17 @@
+<?php
+// module/RSS/view/rss/index.phtml:
+
+$title = 'View RSS Feeds';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <a href="<?= $this->url('rss', ['action' => 'add']) ?>">Add new RSS feed</a>
+</p>
+
+<?php foreach ($feeds as $feed) : ?>
+    <div class="feed" style="border: 1px solid #000000;">
+        <h2><?= $this->escapeHtml($feed->title) ?></h2>
+    </div>
+<?php endforeach; ?>
+</table>

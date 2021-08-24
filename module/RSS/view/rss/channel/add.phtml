@@ -1,0 +1,22 @@
+<?php 
+
+// https://www.vox.com/rss/index.xml
+// https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml
+
+$title = 'Add new RSS Feed';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <?php
+        $form->setAttribute('action', $this->url('rss', ['action' => 'add']));
+        $form->prepare();
+
+        echo $this->form()->openTag($form);
+        echo $this->formRow($form->get('name'));
+        echo $this->formRow($form->get('link'));
+        echo $this->formSubmit($form->get('submit'));
+        echo $this->form()->closeTag();
+    ?>
+</p>
+

@@ -2,22 +2,29 @@
 
 Columns and tables derived from https://validator.w3.org/feed/docs/rss2.html
 
-TextInput ignored as this is rarely used.
-Whilst this may be overkill, it demonstrates how I would look to design and implement a relational
-database for complex data.
-
+channel set to true means its the properties for the channel itself,
+not an item, as the attributes are the same for each
 */
 
 CREATE DATABASE IF NOT EXISTS `reciteme`;
 
 USE `reciteme`;
 
-CREATE TABLE IF NOT EXISTS `rss`
+CREATE TABLE IF NOT EXISTS `channel`
 (
     `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `url` VARCHAR(500) NOT NULL
+) ENGINE = `InnoDB` DEFAULT CHARSET = `utf8mb4` COLLATE = `utf8mb4_unicode_ci`;
+
+CREATE TABLE IF NOT EXISTS `item`
+(
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `channel_id` BIGINT NOT NULL,
+    `channel` TINYINT(1) NOT NULL,
     `title` VARCHAR(500) NOT NULL,
     `link` VARCHAR(500) NOT NULL,
-    `description` VARCHAR(500) NOT NULL,
+    `description` VARCHAR(500),
     `language` VARCHAR(100),
     `copyright` VARCHAR(500),
     `managing_editor` VARCHAR(100),
@@ -40,11 +47,11 @@ CREATE TABLE IF NOT EXISTS `category`
     `domain` VARCHAR(500)
 ) ENGINE = `InnoDB` DEFAULT CHARSET = `utf8mb4` COLLATE = `utf8mb4_unicode_ci`;
 
-CREATE TABLE IF NOT EXISTS `rss_category`
+CREATE TABLE IF NOT EXISTS `item_category`
 (
     `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
     `category_id` BIGINT NOT NULL,
-    `rss_id` BIGINT NOT NULL
+    `item_id` BIGINT NOT NULL
 ) ENGINE = `InnoDB` DEFAULT CHARSET = `utf8mb4` COLLATE = `utf8mb4_unicode_ci`;
 
 CREATE TABLE IF NOT EXISTS `image`
@@ -69,5 +76,6 @@ CREATE TABLE IF NOT EXISTS `cloud`
 ) ENGINE = `InnoDB` DEFAULT CHARSET = `utf8mb4` COLLATE = `utf8mb4_unicode_ci`;
 
 
-ALTER TABLE rss_category ADD CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category(id);
-ALTER TABLE rss_category ADD CONSTRAINT fk_rss_id FOREIGN KEY (rss_id) REFERENCES rss(id);
+ALTER TABLE item ADD CONSTRAINT fk_channel_id FOREIGN KEY (channel_id) REFERENCES channel(id);
+ALTER TABLE item_category ADD CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category(id);
+ALTER TABLE item_category ADD CONSTRAINT fk_item_id FOREIGN KEY (item_id) REFERENCES item(id);
